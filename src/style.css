@@ -1,0 +1,447 @@
+/*
+ * Polifonías del Amar - Hoja de Estilos Principal
+ * Versión: 1.0 (Producción)
+ * Descripción: Estilos para la visualización interactiva de testimonios sobre el amor.
+ */
+
+/* ==========================================================================
+   1. CONFIGURACIÓN GLOBAL Y VARIABLES
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --color-background: #0D0D12;
+  --color-text-primary: #EAEAEA;
+  --color-text-secondary: #A0A0B0;
+  --color-accent: #FFD700;
+  --color-accent-hover: #FFFACD;
+  --panel-background: rgba(25, 26, 36, 0.7);
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --font-main: 'Inter', sans-serif;
+}
+
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+
+body { 
+  font-family: var(--font-main); 
+  color: var(--color-text-primary); 
+  background-color: var(--color-background); 
+  overflow: hidden; 
+}
+
+/* ==========================================================================
+   2. ELEMENTOS PRINCIPALES DE LA INTERFAZ (UI)
+   ========================================================================== */
+
+.webgl { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  display: block; 
+  outline: none; 
+}
+
+/* --- Botón para alternar el panel de filtros --- */
+.panel-toggle-btn {
+  position: fixed;
+  top: 25px;
+  left: 25px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 12px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.line {
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+/* --- Tooltip de hover sobre las estrellas --- */
+#tooltip {
+  position: fixed;
+  background: rgba(40, 40, 45, 0.85);
+  color: var(--color-text-primary);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(5px);
+  font-size: 14px;
+  z-index: 99;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+#tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   3. PANTALLA DE BIENVENIDA (SPLASH SCREEN)
+   ========================================================================== */
+
+#intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 2s ease-in-out 0.5s; /* Añadido un pequeño delay */
+}
+
+#intro-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.intro-content h1 {
+  font-size: clamp(3.5rem, 6vw, 4rem);
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--color-accent);
+  margin-bottom: 20px;
+}
+
+.intro-content p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 40px;
+}
+
+#enter-btn {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-accent);
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#enter-btn:hover {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+}
+
+
+/* ==========================================================================
+   4. PANEL LATERAL DE FILTROS (.constellation-menu)
+   ========================================================================== */
+
+/* --- Contenedor principal y lógica de visibilidad --- */
+.constellation-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 290px;
+  max-height: calc(100vh - 40px);
+  padding: 25px;
+  background: var(--panel-background);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  z-index: 20;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+}
+
+/* --- Estilos para los elementos internos del panel --- */
+.constellation-menu:hover {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.filter-group {
+  margin-bottom: 25px;
+}
+.filter-group:last-child {
+  margin-bottom: 0;
+}
+
+.constellation-menu h3 {
+  font-weight: 600;
+  font-size: 1.1em;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--panel-border);
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+}
+
+/* --- Estilos para los inputs (radio/checkbox) y sus etiquetas --- */
+.constellation-menu label {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  margin-bottom: 4px;
+  user-select: none;
+}
+.constellation-menu label:hover {
+  color: var(--color-accent-hover);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.constellation-menu label:has(input:checked) {
+  color: var(--color-accent);
+  font-weight: 600;
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.constellation-menu input[type="radio"],
+.constellation-menu input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  margin: 0 12px 0 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--color-text-secondary);
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.2s ease;
+}
+.constellation-menu label:hover input {
+  border-color: var(--color-accent-hover);
+}
+.constellation-menu label:has(input:checked) input {
+  border-color: var(--color-accent);
+}
+
+.constellation-menu input[type="radio"] {
+  border-radius: 50%;
+}
+.constellation-menu input[type="radio"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+}
+
+.constellation-menu input[type="checkbox"] {
+  border-radius: 4px;
+}
+.constellation-menu input[type="checkbox"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23FFD700' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 8l4 4L14 4'/%3e%3c/svg%3e");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.constellation-menu input:checked::before {
+  transform: scale(1);
+}
+
+.reset-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-main);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.reset-btn:hover {
+  background-color: rgba(255, 215, 0, 0.15);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+
+/* ==========================================================================
+   5. PANEL DE INFORMACIÓN DE TESTIMONIO (.info-panel)
+   ========================================================================== */
+
+.info-panel {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translate(calc(100% + 40px), -50%);
+  width: 380px;
+  max-height: calc(100vh - 40px);
+  padding: 30px;
+  background: var(--panel-background);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  z-index: 10;
+  overflow-y: auto;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+  opacity: 0;
+}
+.info-panel.visible {
+  transform: translate(0, -50%);
+  opacity: 1;
+}
+
+.close-btn {
+  position: absolute;
+  top: 18px;
+  right: 25px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.3s, transform 0.3s;
+}
+.close-btn:hover {
+  color: var(--color-accent);
+  transform: rotate(90deg);
+}
+
+.info-panel h2 {
+  color: var(--color-accent);
+  font-size: 1.4em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.question-title {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.analysis-grid {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--panel-border);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+.analysis-grid .grid-span-2 {
+  grid-column: 1 / -1;
+}
+.analysis-grid > div > p:last-child {
+  margin-bottom: 0;
+}
+
+.info-panel strong {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.info-panel p {
+  line-height: 1.6;
+  margin-bottom: 18px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+.info-panel p#transcription-text {
+  font-style: italic;
+  padding-left: 15px;
+  border-left: 2px solid var(--color-accent);
+}
+
+
+/* ==========================================================================
+   6. LÓGICA DE VISIBILIDAD DE PANELES (CONTROLADA DESDE JS)
+   ========================================================================== */
+
+body.filters-panel-visible .constellation-menu {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+body.filters-panel-visible .panel-toggle-btn {
+  transform: translateX(315px);
+}
+body.filters-panel-visible .line1 {
+  transform: translateY(11px) rotate(45deg);
+}
+body.filters-panel-visible .line2 {
+  opacity: 0;
+}
+body.filters-panel-visible .line3 {
+  transform: translateY(-11px) rotate(-45deg);
+}
+
+
+/* ==========================================================================
+   7. SCROLLBARS PERSONALIZADAS (PARA WEBKIT)
+   ========================================================================== */
+
+.constellation-menu::-webkit-scrollbar,
+.info-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.constellation-menu::-webkit-scrollbar-track,
+.info-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.constellation-menu::-webkit-scrollbar-thumb,
+.info-panel::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Metadatos para SEO y redes sociales -->
+  <title>Polifonías del Amar</title>
+  <meta name="description" content="Un universo interactivo tejido con voces reales. Una exploración artística sobre las múltiples formas del amor." />
+  <meta name="author" content="[Tu Nombre o Alias]" />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.svg" />
+
+  <!-- Hojas de Estilo y Scripts -->
+  <link rel="stylesheet" href="/src/style.css">
+  <script type="module" src="/src/main.js" defer></script>
+</head>
+
+<body>
+
+  <!-- Pantalla de Bienvenida -->
+  <div id="intro-overlay">
+    <div class="intro-content">
+      <h1>Polifonías del Amar</h1>
+      <p>
+        Este es un universo tejido con voces reales, un archivo vivo de las múltiples formas del amor. 
+        Cada punto de luz es un testimonio. Te invitamos a explorar, escuchar y conectar.
+      </p>
+      <button id="enter-btn">Explorar el Universo</button>
+    </div>
+  </div>
+
+  <!-- Audio de fondo en bucle -->
+  <audio id="background-audio" loop src="/audio/atmos/moby.mp3"></audio>
+
+  <!-- Botón para alternar el panel de filtros -->
+  <button id="toggle-filters-btn" class="panel-toggle-btn" title="Mostrar/Ocultar Filtros">
+    <span class="line line1"></span>
+    <span class="line line2"></span>
+    <span class="line line3"></span>
+  </button>
+
+  <!-- Lienzo de Three.js para la visualización -->
+  <canvas class="webgl"></canvas>
+
+  <!-- Panel de filtros -->
+  <nav class="constellation-menu">
+    <div class="filter-group">
+      <h3>Constelaciones</h3>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="all" checked> Nebulosa Inicial</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Primera_Vez_Amor"> El Primer Latido</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Amor_Palabra_Frase"> La Esencia</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Amor_Puede_Doler"> La Cicatriz</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Amor_Como_Persona"> La Encarnación</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Accion_Cotidiana_Amor"> El Gesto Cotidiano</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Ensenanza_Faltante_Amor"> La Lección Ausente</label>
+      <label><input type="radio" name="constelacion" data-filter-key="Pregunta_Respondida" value="Mensaje_Sobre_Amor"> El Eco Final</label>
+    </div>
+    <div class="filter-group">
+      <h3>Género</h3>
+      <label><input type="checkbox" name="genero" data-filter-key="Genero" value="Hombre"> Hombre</label>
+      <label><input type="checkbox" name="genero" data-filter-key="Genero" value="Mujer"> Mujer</label>
+    </div>
+    <div class="filter-group">
+      <h3>Rango de Edad</h3>
+      <label><input type="checkbox" name="edad" data-filter-key="Edad" value="18-25"> Jóvenes (18-25)</label>
+      <label><input type="checkbox" name="edad" data-filter-key="Edad" value="26-45"> Adultos (26-45)</label>
+      <label><input type="checkbox" name="edad" data-filter-key="Edad" value="46-99"> Mayores (46+)</label>
+    </div>
+    <button id="reset-filters-btn" class="reset-btn">Limpiar Filtros</button>
+  </nav>
+
+  <!-- Panel de información del testimonio -->
+  <div class="info-panel">
+      <button class="close-btn" title="Cerrar">×</button>
+      <h2 id="title-element"></h2>
+      <p id="question-title" class="question-title"></p>
+      <div class="info-content">
+        <p><strong>Transcripción:</strong></p>
+        <p id="transcription-text"></p>
+        <div class="analysis-grid">
+          <div><p><strong>Edad:</strong></p><p id="age-element"></p></div>
+          <div><p><strong>Sensación Dominante:</strong></p><p id="tone-element"></p></div>
+          <div class="grid-span-2"><p><strong>Imagen Central:</strong></p><p id="metaphor-element"></p></div>
+          <div class="grid-span-2"><p><strong>Arquetipo Cultural:</strong></p><p id="archetype-element"></p></div>
+          <div class="grid-span-2"><p><strong>El Impulso Químico:</strong></p><p id="neuro-element"></p></div>
+        </div>
+      </div>
+  </div>
+
+  <!-- Elemento para el tooltip del hover -->
+  <div id="tooltip"></div>
+
+</body>
+</html>
